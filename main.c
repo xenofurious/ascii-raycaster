@@ -34,11 +34,11 @@ void tick_loop(char **screen_ptr, struct int_coord screen_dimensions, struct pla
         refresh();
 
         end = clock();
-        compute_time = (float)(end-start)/CLOCKS_PER_SEC;
+        compute_time = 1000000*(float)(end-start)/CLOCKS_PER_SEC;
 
 //        printf("%.7f\n", compute_time); // this is a very handy debug parameter for seeing how much compute time the program is taking.
         if (delta_time>compute_time) {
-            usleep(delta_time - (1000000*compute_time));
+            usleep(delta_time - compute_time);
         }
     }
 }

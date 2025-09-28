@@ -2,7 +2,7 @@
 
 #pragma once
 
-#define EPSILON 0.000001
+#define EPSILON 0.0001
 
 float_coord multiply_vector(float_coord vector, float factor);
 float magnitude(float_coord vector);

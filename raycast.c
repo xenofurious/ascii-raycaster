@@ -12,8 +12,8 @@
 
 float_coord calculate_first_steps(float_coord start_pos, float_coord direction) {
     float_coord dist_to_wall;    
-    dist_to_wall.x = (int)start_pos.x - start_pos.x;
-    dist_to_wall.y = (int)start_pos.y - start_pos.y;
+    dist_to_wall.x = floor(start_pos.x) - start_pos.x;
+    dist_to_wall.y = floor(start_pos.y) - start_pos.y;
     if (direction.x>=0) {
         dist_to_wall.x++;
     }
@@ -71,8 +71,17 @@ struct grid_collision_return get_next_grid_collision(float_coord pos, float_coor
         case none:
             break;
     }
+
     float_coord next_horizontal_collision = ADD(pos, multiply_vector(normalise_vector_along_x_axis(direction), fabs(calculate_first_steps(pos, direction).x)));
     float_coord next_vertical_collision = ADD(pos, multiply_vector(normalise_vector_along_y_axis(direction), fabs(calculate_first_steps(pos, direction).y)));
+    /*
+    printf("next horizontal collision (x) = %f\n", next_horizontal_collision.x);
+    printf("next horizontal collision (y) = %f\n", next_horizontal_collision.y);
+    printf("next vertical collision (x) = %f\n", next_vertical_collision.x);
+    printf("next vertical collision (y) = %f\n", next_vertical_collision.y);
+    printf("distance to next horizontal wall %f\n", calculate_first_steps(pos, direction).x);
+    printf("distance to next vertical wall %f\n", calculate_first_steps(pos, direction).y);
+    */
     float dir1 = magnitude(SUB(next_horizontal_collision, pos));
     float dir2 = magnitude(SUB(next_vertical_collision, pos));
     bool dir_comp = dir1<dir2;    
@@ -109,14 +118,15 @@ int main() {
 
       //float_coord next_collision = get_first_grid_collision(test_start_pos, test_direction); 
     for (int i = 1; i<6; i++) {
-        next_collision_data = get_next_grid_collision(pos, test_direction, none, total_dist);
+        printf("\n%dth iteration!!!\n", i);
+        next_collision_data = get_next_grid_collision(pos, test_direction, collision_dir, total_dist);
         pos = next_collision_data.collision_pos; 
         collision_dir = next_collision_data.collision_dir;
         total_dist = next_collision_data.total_dist;
         
-        printf("\n%dth iteration!!!\n", i);
         printf("coord of wall collision (x) = %f\n", pos.x);
         printf("coord of wall collision (y) = %f\n", pos.y);
+        printf("direction of collision = %d\n", collision_dir);
 
     }
 
