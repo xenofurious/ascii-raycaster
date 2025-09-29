@@ -10,7 +10,7 @@ const float delta_time = 1000000/(float)fps;
 const float char_width_to_height = 1.85023686; // optimised specifically for my terminal font. i don't really care what you think tbh.
 
 
-char *init_display(struct int_coord screen_dimensions) {
+char *init_display(int_coord screen_dimensions) {
     char (*screen)[screen_dimensions.x] = malloc((screen_dimensions.x * screen_dimensions.y) * sizeof(char));
     return *screen;
 }
@@ -19,7 +19,7 @@ void deinit_display(char *screen_ptr) {
     free(screen_ptr);    
 }
 
-void tick_loop(char **screen_ptr, struct int_coord screen_dimensions, struct player_stats player) {
+void tick_loop(char **screen_ptr, int_coord screen_dimensions, struct player_stats player) {
     int counter = 0;
     clock_t start, end;
     float compute_time;
@@ -43,7 +43,7 @@ void tick_loop(char **screen_ptr, struct int_coord screen_dimensions, struct pla
     }
 }
 
-struct int_coord get_screen_dimensions() {
+int_coord get_screen_dimensions() {
     int rows, cols;
     float float_rows, float_cols;
     getmaxyx(stdscr, rows, cols);
@@ -57,7 +57,7 @@ struct int_coord get_screen_dimensions() {
     }
     
 
-    struct int_coord return_ints;
+    int_coord return_ints;
     return_ints.x = cols;
     return_ints.y = rows;
     return return_ints;
@@ -65,7 +65,7 @@ struct int_coord get_screen_dimensions() {
 
 int main() {
     initscr();
-    struct int_coord screen_dimensions = get_screen_dimensions();
+    int_coord screen_dimensions = get_screen_dimensions();
     char *screen_ptr = init_display(screen_dimensions);
 
     player.player_coords = (float_coord){1.5, 1.5};

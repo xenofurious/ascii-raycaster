@@ -56,7 +56,7 @@ void render_to_buffer (struct player_stats player, float fov, char *map_ptr) {
 // it's weird, but it's because the array is stored like that.
 // it makes everything easier
 
-void print_display_buffer(char **screen_ptr, struct int_coord screen_dimensions) {
+void print_display_buffer(char **screen_ptr, int_coord screen_dimensions) {
     for (int i = 0; i<screen_dimensions.x; i++) {
         mvprintw(4, i, "%d", i%10);
     }

@@ -4,6 +4,7 @@
 
 #include "header.h"
 #include "linalg.h"
+#include "map_data.h"
 
 // macros
 #define ADD(a, b) sum_vectors(a, b)
@@ -40,19 +41,6 @@ float_coord get_first_grid_collision(float_coord start_pos, float_coord directio
     float_coord next_horizontal_collision = ADD(start_pos, multiply_vector(normalise_vector_along_x_axis(direction), fabs(calculate_first_steps(start_pos, direction).x)));
     float_coord next_vertical_collision = ADD(start_pos, multiply_vector(normalise_vector_along_y_axis(direction), fabs(calculate_first_steps(start_pos, direction).y)));
 
-
-/* DEBUG SECTION FOR CHECKING IF THE THING IS WORKING CORRECTLY!!!!!
-    printf("\n");
-    printf("coord of next wall collision (x) = %f\n", next_horizontal_collision.x);
-    printf("coord of next wall collision (y) = %f\n", next_horizontal_collision.y);
-    printf("coord of next wall collision (x) = %f\n", next_vertical_collision.x);
-    printf("coord of next wall collision (y) = %f\n", next_vertical_collision.y);
-
-    printf("\n");
-    printf("%f\n", magnitude(subtract_vectors(next_horizontal_collision, start_pos)));
-    printf("%f\n", magnitude(subtract_vectors(next_vertical_collision, start_pos)));
-*/
- 
     return (magnitude(SUB(next_horizontal_collision, start_pos))<magnitude(SUB(next_vertical_collision, start_pos))) ? (next_horizontal_collision) : (next_vertical_collision);   
 }
 
@@ -74,14 +62,7 @@ struct grid_collision_return get_next_grid_collision(float_coord pos, float_coor
 
     float_coord next_horizontal_collision = ADD(pos, multiply_vector(normalise_vector_along_x_axis(direction), fabs(calculate_first_steps(pos, direction).x)));
     float_coord next_vertical_collision = ADD(pos, multiply_vector(normalise_vector_along_y_axis(direction), fabs(calculate_first_steps(pos, direction).y)));
-    /*
-    printf("next horizontal collision (x) = %f\n", next_horizontal_collision.x);
-    printf("next horizontal collision (y) = %f\n", next_horizontal_collision.y);
-    printf("next vertical collision (x) = %f\n", next_vertical_collision.x);
-    printf("next vertical collision (y) = %f\n", next_vertical_collision.y);
-    printf("distance to next horizontal wall %f\n", calculate_first_steps(pos, direction).x);
-    printf("distance to next vertical wall %f\n", calculate_first_steps(pos, direction).y);
-    */
+
     float dir1 = magnitude(SUB(next_horizontal_collision, pos));
     float dir2 = magnitude(SUB(next_vertical_collision, pos));
     bool dir_comp = dir1<dir2;    
@@ -105,6 +86,26 @@ struct grid_collision_return get_next_grid_collision(float_coord pos, float_coor
     return (struct grid_collision_return) {collision_pos, collision_dir, total_dist};
 }
 
+void check_collision(dir check_dir, float_coord pos, map_object (*map_ptr)[5]) { // the fact that it explicitly points towards size 5 is bad and i need to fix this asap
+    switch (check_dir){
+        case up: pos.y-=EPSILON; break;
+        case right: pos.x+=EPSILON; break;
+        case down: pos.y+=EPSILON; break;
+        case left: pos.x-=EPSILON; break;
+        case none: break;
+    }
+    int_coord check_pos = {(int)pos.x, (int)pos.y};
+    printf("\n");
+    printf("checking cell %d, %d\n", check_pos.x, check_pos.y);
+    if (map_ptr[check_pos.x][check_pos.y] == wall) {
+        printf("wall collision!!!\n");
+    } else {
+        printf("nothing...");
+    }
+    printf("map pointer in this cell points to %d\n", map_ptr[check_pos.x][check_pos.y]);
+}
+
+
 
 
 int main() {
@@ -116,7 +117,6 @@ int main() {
     dir collision_dir = none;
     float total_dist = 0;
 
-      //float_coord next_collision = get_first_grid_collision(test_start_pos, test_direction); 
     for (int i = 1; i<6; i++) {
         printf("\n%dth iteration!!!\n", i);
         next_collision_data = get_next_grid_collision(pos, test_direction, collision_dir, total_dist);
@@ -127,9 +127,11 @@ int main() {
         printf("coord of wall collision (x) = %f\n", pos.x);
         printf("coord of wall collision (y) = %f\n", pos.y);
         printf("direction of collision = %d\n", collision_dir);
+        printf("total distance travelled by the ray = %f\n", total_dist);
 
     }
-
+    float_coord my_pos = {1.5, 1.0}; 
+    check_collision(down, my_pos, test_map_ptr);
 
     return 0;
 }
