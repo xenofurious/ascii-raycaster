@@ -1,7 +1,6 @@
 #include <math.h>
 #include "header.h"
 
-
 float_coord multiply_vector(float_coord vector, float factor) {
     vector.x *= factor;
     vector.y *= factor;

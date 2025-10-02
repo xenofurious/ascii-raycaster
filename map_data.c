@@ -2,10 +2,6 @@
 #include <stdio.h>
 #include "map_data.h"
 
-
-int test_map_rows = 5;
-int test_map_cols = 5;
-
 map_object** malloc_map(int rows, int cols) {
     map_object** arr;
     arr = (map_object**)malloc(rows * sizeof(map_object*)); 
@@ -25,11 +21,7 @@ void deinit_map(map_object** arr, int rows, int cols) {
         free(arr[i]); 
     }
     free(arr); 
-
-
 }
-
-struct file_parse_return {map_object **map_ptr; int rows; int cols;};
 
 struct file_parse_return init_map(char *filename) {
     FILE *fp = fopen(filename, "r");
@@ -52,20 +44,7 @@ struct file_parse_return init_map(char *filename) {
     return (struct file_parse_return) {map_ptr, rows, cols};
 }
 
-
-
-// END OF TEST MAP THING.
-
-void create_map(map_object **map_ptr, map_object **map, int rows, int cols) {
-    for (int i = 0; i<rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            map_ptr[i][j] = map[i][j];
-        }
-    }
-}
-
-
-
+/*
 int main() {
     struct file_parse_return file_parse = init_map("test_map_1");
     map_object **map_ptr = file_parse.map_ptr;
@@ -73,7 +52,7 @@ int main() {
     int cols = file_parse.cols;
     printf("%d\n", map_ptr[3][3]);
 
-    deinit_map(map_ptr, test_map_rows, test_map_cols);
+    deinit_map(map_ptr, rows, cols);
     printf("michaelgirafortniteskin\n");
     return 0;
-}
+}*/

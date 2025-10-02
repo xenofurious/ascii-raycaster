@@ -8,9 +8,7 @@ typedef enum {
     null
 } map_object;
 
-extern int test_map_rows;
-extern int test_map_cols;
-
-map_object **malloc_map(int map_rows, int map_cols);
+struct file_parse_return {map_object **map_ptr; int rows; int cols;};
+struct file_parse_return init_map(char *filename);
 void deinit_map(map_object **map_ptr, int map_rows, int map_cols);
 

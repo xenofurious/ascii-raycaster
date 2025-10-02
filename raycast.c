@@ -86,7 +86,7 @@ struct grid_collision_return get_next_grid_collision(float_coord pos, float_coor
     return (struct grid_collision_return) {collision_pos, collision_dir, total_dist};
 }
 
-void check_collision(dir check_dir, float_coord pos, map_object (*map_ptr)[5]) { // the fact that it explicitly points towards size 5 is bad and i need to fix this asap
+void check_collision(dir check_dir, float_coord pos, map_object **map_ptr) { // the fact that it explicitly points towards size 5 is bad and i need to fix this asap
     switch (check_dir){
         case up: pos.y-=EPSILON; break;
         case right: pos.x+=EPSILON; break;
@@ -111,24 +111,34 @@ void check_collision(dir check_dir, float_coord pos, map_object (*map_ptr)[5]) {
 int main() {
     float_coord test_start_pos = {1.5, 1.5};
     float_coord test_direction = {1.4, -3.6};
+    
 
     struct grid_collision_return next_collision_data;
     float_coord pos = test_start_pos;
     dir collision_dir = none;
     float total_dist = 0;
 
-    for (int i = 1; i<6; i++) {
+
+    struct file_parse_return map_data = init_map("test_map_1");
+    map_object **map_ptr = map_data.map_ptr;
+    int rows = map_data.rows;
+    int cols = map_data.cols;
+    printf("%d\n", map_ptr[0][0]);
+
+    int i = 0;
+    while (pos.x >0 && pos.y > 0 && pos.x <rows+1 && pos.y<cols+1) { // i don't know if the +1 is useful but i'm not taking any chances
         printf("\n%dth iteration!!!\n", i);
         next_collision_data = get_next_grid_collision(pos, test_direction, collision_dir, total_dist);
         pos = next_collision_data.collision_pos; 
         collision_dir = next_collision_data.collision_dir;
         total_dist = next_collision_data.total_dist;
         
+
         printf("coord of wall collision (x) = %f\n", pos.x);
         printf("coord of wall collision (y) = %f\n", pos.y);
         printf("direction of collision = %d\n", collision_dir);
         printf("total distance travelled by the ray = %f\n", total_dist);
-
+        i++;
     }
     float_coord my_pos = {1.5, 1.0}; 
 //    check_collision(down, my_pos, test_map_ptr);
