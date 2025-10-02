@@ -131,7 +131,7 @@ int main() {
 
     }
     float_coord my_pos = {1.5, 1.0}; 
-    check_collision(down, my_pos, test_map_ptr);
+//    check_collision(down, my_pos, test_map_ptr);
 
     return 0;
 }

@@ -2,12 +2,6 @@
 
 #pragma once
 
-// enums
-typedef enum {
-    wall,
-    empty,
-    null
-} map_object;
 
 typedef enum {is_not, rot_left, rot_right} is_rotating;
 typedef enum {top_right, bottom_right, bottom_left, top_left} quadrant_dir;

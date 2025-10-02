@@ -1,15 +1,79 @@
-#include "header.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include "map_data.h"
 
 
 int test_map_rows = 5;
 int test_map_cols = 5;
 
-map_object test_map[5][5] = {{wall, wall, wall, wall, wall},
-                            {wall, empty, empty, empty, wall},
-                            {wall, empty, wall, empty, wall},
-                            {wall, empty, empty, empty, wall},
-                            {wall, wall, wall, wall, wall}};
+map_object** malloc_map(int rows, int cols) {
+    map_object** arr;
+    arr = (map_object**)malloc(rows * sizeof(map_object*)); 
+    for (int i = 0; i < rows; i++)
+        arr[i] = (map_object*)malloc(cols * sizeof(map_object));
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            arr[i][j] = empty; 
+        }
+    }
+    return arr;
+}
+
+void deinit_map(map_object** arr, int rows, int cols) {
+    // Free allocated memory
+    for (int i = 0; i < rows; i++) {
+        free(arr[i]); 
+    }
+    free(arr); 
 
 
-map_object (*test_map_ptr)[5] = test_map;
+}
+
+struct file_parse_return {map_object **map_ptr; int rows; int cols;};
+
+struct file_parse_return init_map(char *filename) {
+    FILE *fp = fopen(filename, "r");
+    
+    // first pass reads the header file. this is of the form "int row, int col"
+    int rows, cols;
+    fscanf(fp, "%d%d", &rows, &cols);
+    printf("no of rows: %d, no of cols = %d\n", rows, cols);
+    
+    map_object **map_ptr = malloc_map(rows, cols);
+
+    // second pass reads the rest of the map data and then writes it to the malloc'ed array
+    for(int i=0; i<rows; i++){
+        for(int j=0; j<cols; j++){
+            fscanf(fp, "%d", &map_ptr[i][j]);
+        }
+    }
+
+    fclose(fp);
+    return (struct file_parse_return) {map_ptr, rows, cols};
+}
+
+
+
+// END OF TEST MAP THING.
+
+void create_map(map_object **map_ptr, map_object **map, int rows, int cols) {
+    for (int i = 0; i<rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            map_ptr[i][j] = map[i][j];
+        }
+    }
+}
+
+
+
+int main() {
+    struct file_parse_return file_parse = init_map("test_map_1");
+    map_object **map_ptr = file_parse.map_ptr;
+    int rows = file_parse.rows;
+    int cols = file_parse.cols;
+    printf("%d\n", map_ptr[3][3]);
+
+    deinit_map(map_ptr, test_map_rows, test_map_cols);
+    printf("michaelgirafortniteskin\n");
+    return 0;
+}
