@@ -16,7 +16,6 @@ map_object** malloc_map(int rows, int cols) {
 }
 
 void deinit_map(map_object** arr, int rows, int cols) {
-    // Free allocated memory
     for (int i = 0; i < rows; i++) {
         free(arr[i]); 
     }

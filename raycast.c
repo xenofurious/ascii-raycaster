@@ -1,10 +1,8 @@
-#include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
 
 #include "header.h"
 #include "linalg.h"
-#include "map_data.h"
 
 // macros
 #define ADD(a, b) sum_vectors(a, b)
@@ -131,8 +129,8 @@ struct grid_collision_return perform_raycast(map_object **map_ptr, float_coord s
 
 
 
-
 /*
+
 int main() {
     float_coord test_start_pos = {1.5, 1.5};
     float_coord test_direction = {1.4, -3.6};

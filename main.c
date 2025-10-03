@@ -10,13 +10,24 @@ const float delta_time = 1000000/(float)fps;
 const float char_width_to_height = 1.85023686; // optimised specifically for my terminal font. i don't really care what you think tbh.
 
 
-char *init_display(int_coord screen_dimensions) {
-    char (*screen)[screen_dimensions.x] = malloc((screen_dimensions.x * screen_dimensions.y) * sizeof(char));
-    return *screen;
+char **init_display(int_coord screen_dimensions) {
+    char** arr;
+    arr = (char**)malloc(screen_dimensions.x * sizeof(char*)); 
+    for (int i = 0; i < screen_dimensions.x; i++)
+        arr[i] = (char*)malloc(screen_dimensions.y * sizeof(char));
+    for (int i = 0; i < screen_dimensions.x; i++) {
+        for (int j = 0; j < screen_dimensions.y; j++) {
+            arr[i][j] = empty; 
+        }
+    }
+    return arr;
 }
 
-void deinit_display(char *screen_ptr) {
-    free(screen_ptr);    
+void deinit_display(char **arr, int_coord screen_dimensions) {
+    for (int i = 0; i < screen_dimensions.x; i++) {
+        free(arr[i]); 
+    }
+    free(arr); 
 }
 
 void tick_loop(char **screen_ptr, int_coord screen_dimensions, struct player_stats player) {
@@ -66,14 +77,15 @@ int_coord get_screen_dimensions() {
 int main() {
     initscr();
     int_coord screen_dimensions = get_screen_dimensions();
-    char *screen_ptr = init_display(screen_dimensions);
+    char **screen_ptr = init_display(screen_dimensions);
 
     player.player_coords = (float_coord){1.5, 1.5};
     player.direction_facing = 0; 
     fov = 90;
         
-    tick_loop(&screen_ptr, screen_dimensions, player);
+    tick_loop(screen_ptr, screen_dimensions, player);
     endwin();
-    deinit_display(screen_ptr);
+    deinit_display(screen_ptr, screen_dimensions);
     return 0;
 }
+

@@ -37,6 +37,6 @@ extern int_coord screen_dimensions;
 // functions
 void gameloop();
 int_coord get_screen_dimensions();
-char *init_display(int_coord screen_dimensions);
-void deinit_display(char *screen_ptr);
+char **init_display(int_coord screen_dimensions);
+void deinit_display(char **arr, int_coord screen_dimensions);
 void print_display_buffer(char **screen_ptr, int_coord screen_dimensions);

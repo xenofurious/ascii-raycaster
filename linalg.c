@@ -1,5 +1,6 @@
 #include <math.h>
 #include "header.h"
+#include "linalg.h"
 
 float_coord multiply_vector(float_coord vector, float factor) {
     vector.x *= factor;
@@ -26,5 +27,9 @@ float_coord subtract_vectors(float_coord vector1, float_coord vector2){
 }
 
 float_coord convert_angle_to_normalised_vector(float direction) {
-    return (float_coord){sin(direction), cos(direction)};
+    return (float_coord){sin(direction), -cos(direction)};
+}
+
+float convert_degrees_to_radians(float degrees) {
+    return degrees*M_PI/180;
 }
