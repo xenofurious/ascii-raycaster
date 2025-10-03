@@ -1,8 +1,7 @@
 #include <ncurses.h>
 
 #include "header.h"
-
-
+#include "linalg.h"
 quadrant_dir return_direction(float_coord direction) {
     if (direction.x>=0){
         if (direction.y>=0) {
@@ -19,36 +18,13 @@ quadrant_dir return_direction(float_coord direction) {
     }
 }
 
-void calculate_first_step_perpendicular(float_coord start_pos, float_coord direction) {
-    float dist_to_wall_x, dist_to_wall_y;    
-    dist_to_wall_x = (int)start_pos.x - start_pos.x;
-    dist_to_wall_y = (int)start_pos.y - start_pos.y;
-    if (direction.x>=0) {
-        dist_to_wall_x++;
-    }
-    if (direction.y>=0) {
-        dist_to_wall_y++;
-    }
-    printf("position to wall (x) = %f\n", dist_to_wall_x);
-    printf("position to wall (y) = %f\n", dist_to_wall_y);
-}
-
-float raycast(float_coord start_pos, float_coord direction) {
-    quadrant_dir raycast_quadrant = return_direction(direction);
-    // first pass - reach the first grid
-    
-
-    // second pass - from a grid point, calculate consecutive jumps and jump until a wall is reached or X jumps are made.
-    return 2.0f;    
-}
 
 
 
 // this function will NOT be void later on.
 // god this is so complicated.
 void render_to_buffer (struct player_stats player, float fov, char *map_ptr) {
-    
-
+    float_coord direction = convert_angle_to_normalised_vector(player.direction_facing);
 }
 
 

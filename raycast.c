@@ -44,8 +44,6 @@ float_coord get_first_grid_collision(float_coord start_pos, float_coord directio
     return (magnitude(SUB(next_horizontal_collision, start_pos))<magnitude(SUB(next_vertical_collision, start_pos))) ? (next_horizontal_collision) : (next_vertical_collision);   
 }
 
-struct grid_collision_return {float_coord collision_pos; dir collision_dir; float total_dist;};
-
 struct grid_collision_return get_next_grid_collision(float_coord pos, float_coord direction, dir prev_collision, float total_dist){
     switch (prev_collision) {
         case up:
@@ -86,7 +84,7 @@ struct grid_collision_return get_next_grid_collision(float_coord pos, float_coor
     return (struct grid_collision_return) {collision_pos, collision_dir, total_dist};
 }
 
-void check_collision(dir check_dir, float_coord pos, map_object **map_ptr) { // the fact that it explicitly points towards size 5 is bad and i need to fix this asap
+bool check_collision(dir check_dir, float_coord pos, map_object **map_ptr) { // the fact that it explicitly points towards size 5 is bad and i need to fix this asap
     switch (check_dir){
         case up: pos.y-=EPSILON; break;
         case right: pos.x+=EPSILON; break;
@@ -95,53 +93,58 @@ void check_collision(dir check_dir, float_coord pos, map_object **map_ptr) { // 
         case none: break;
     }
     int_coord check_pos = {(int)pos.x, (int)pos.y};
-    printf("\n");
-    printf("checking cell %d, %d\n", check_pos.x, check_pos.y);
     if (map_ptr[check_pos.x][check_pos.y] == wall) {
-        printf("wall collision!!!\n");
+        return true;
     } else {
-        printf("nothing...");
+        return false;
     }
-    printf("map pointer in this cell points to %d\n", map_ptr[check_pos.x][check_pos.y]);
+}
+
+struct grid_collision_return perform_raycast(map_object **map_ptr, float_coord start_pos, float_coord direction, int rows, int cols) {
+    struct grid_collision_return next_collision_data;
+    float_coord pos = start_pos;
+    dir collision_dir = none;
+    float total_dist = 0;
+    bool collided = false;
+
+    int i = 0;
+    while (pos.x >0 && pos.y > 0 && pos.x <rows+1 && pos.y<cols+1 && collided==false) { // i don't know if the +1 is useful but i'm not taking any chances
+        // printf("\n%dth iteration!!!\n", i);
+        next_collision_data = get_next_grid_collision(pos, direction, collision_dir, total_dist);
+        pos = next_collision_data.collision_pos; 
+        collision_dir = next_collision_data.collision_dir;
+        total_dist = next_collision_data.total_dist;
+        collided = check_collision(collision_dir, pos, map_ptr);
+        
+        // printf("coord of wall collision (x) = %f\n", pos.x);
+        // printf("coord of wall collision (y) = %f\n", pos.y);
+        // printf("direction of collision = %d\n", collision_dir);
+        // printf("total distance travelled by the ray = %f\n", total_dist);
+        
+        i++;
+    }
+    if (!collided){
+        total_dist = -1;
+    }
+    return (struct grid_collision_return) {pos, collision_dir, total_dist};
 }
 
 
 
 
+/*
 int main() {
     float_coord test_start_pos = {1.5, 1.5};
     float_coord test_direction = {1.4, -3.6};
-    
-
-    struct grid_collision_return next_collision_data;
-    float_coord pos = test_start_pos;
-    dir collision_dir = none;
-    float total_dist = 0;
-
 
     struct file_parse_return map_data = init_map("test_map_1");
     map_object **map_ptr = map_data.map_ptr;
     int rows = map_data.rows;
     int cols = map_data.cols;
-    printf("%d\n", map_ptr[0][0]);
 
-    int i = 0;
-    while (pos.x >0 && pos.y > 0 && pos.x <rows+1 && pos.y<cols+1) { // i don't know if the +1 is useful but i'm not taking any chances
-        printf("\n%dth iteration!!!\n", i);
-        next_collision_data = get_next_grid_collision(pos, test_direction, collision_dir, total_dist);
-        pos = next_collision_data.collision_pos; 
-        collision_dir = next_collision_data.collision_dir;
-        total_dist = next_collision_data.total_dist;
-        
-
-        printf("coord of wall collision (x) = %f\n", pos.x);
-        printf("coord of wall collision (y) = %f\n", pos.y);
-        printf("direction of collision = %d\n", collision_dir);
-        printf("total distance travelled by the ray = %f\n", total_dist);
-        i++;
-    }
-    float_coord my_pos = {1.5, 1.0}; 
-//    check_collision(down, my_pos, test_map_ptr);
+    struct grid_collision_return raycast_data = perform_raycast(map_ptr, test_start_pos, test_direction, rows, cols);
+    printf("x: %f, y: %f, total dist = %f\n", raycast_data.collision_pos.x, raycast_data.collision_pos.y, raycast_data.total_dist);
 
     return 0;
 }
+*/
