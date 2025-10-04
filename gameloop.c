@@ -3,6 +3,7 @@
 #include "header.h"
 
 void gameloop () {
+    //render_to_buffer()
     
 
 }
