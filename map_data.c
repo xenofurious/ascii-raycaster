@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "map_data.h"
 
 map_object** malloc_map(int rows, int cols) {
@@ -13,13 +14,6 @@ map_object** malloc_map(int rows, int cols) {
         }
     }
     return arr;
-}
-
-void deinit_map(map_object** arr, int rows, int cols) {
-    for (int i = 0; i < rows; i++) {
-        free(arr[i]); 
-    }
-    free(arr); 
 }
 
 struct file_parse_return init_map(char *filename) {
@@ -41,6 +35,13 @@ struct file_parse_return init_map(char *filename) {
 
     fclose(fp);
     return (struct file_parse_return) {map_ptr, rows, cols};
+}
+
+void deinit_map(map_object** arr, int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        free(arr[i]); 
+    }
+    free(arr); 
 }
 
 /*

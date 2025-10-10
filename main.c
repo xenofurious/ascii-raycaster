@@ -4,20 +4,22 @@
 #include <stdlib.h>
 
 #include "header.h"
+#include "map_data.h"
 
 const int fps = 60;
 const float delta_time = 1000000/(float)fps;
 const float char_width_to_height = 1.85023686; // optimised specifically for my terminal font. i don't really care what you think tbh.
-
+float fov;
 
 char **init_display(int_coord screen_dimensions) {
     char** arr;
     arr = (char**)malloc(screen_dimensions.x * sizeof(char*)); 
     for (int i = 0; i < screen_dimensions.x; i++)
         arr[i] = (char*)malloc(screen_dimensions.y * sizeof(char));
+
     for (int i = 0; i < screen_dimensions.x; i++) {
         for (int j = 0; j < screen_dimensions.y; j++) {
-            arr[i][j] = empty; 
+            arr[i][j] = ' '; 
         }
     }
     return arr;
@@ -30,18 +32,20 @@ void deinit_display(char **arr, int_coord screen_dimensions) {
     free(arr); 
 }
 
-void tick_loop(char **screen_ptr, int_coord screen_dimensions, struct player_stats player) {
+void tick_loop(char **screen_ptr, int_coord screen_dimensions, float fov, struct player_stats player, map_object **map_ptr) {
     int counter = 0;
     clock_t start, end;
     float compute_time;
 
-    while (1) {
+
+    //while (bob == 1) {
         start = clock();
 
         counter++;
         
-        gameloop();
-        print_display_buffer(screen_ptr, screen_dimensions);
+        // init map
+        gameloop(player, fov, map_ptr, screen_ptr);
+//        print_display_buffer(screen_ptr, screen_dimensions);
         refresh();
 
         end = clock();
@@ -51,7 +55,9 @@ void tick_loop(char **screen_ptr, int_coord screen_dimensions, struct player_sta
         if (delta_time>compute_time) {
             usleep(delta_time - compute_time);
         }
-    }
+
+ //       bob = 2;
+//    }
 }
 
 int_coord get_screen_dimensions() {
@@ -76,16 +82,29 @@ int_coord get_screen_dimensions() {
 
 int main() {
     initscr();
+    struct file_parse_return map = init_map("test_map_1");
+    map_object **map_ptr = map.map_ptr;
+    int cols = map.cols;
+    int rows = map.rows;
+    
     int_coord screen_dimensions = get_screen_dimensions();
+//    int_coord screen_dimensions = {205, 62};
+
+
     char **screen_ptr = init_display(screen_dimensions);
 
     player.player_coords = (float_coord){1.5, 1.5};
-    player.direction_facing = 0; 
+    player.direction_facing = 135; 
     fov = 90;
         
-    tick_loop(screen_ptr, screen_dimensions, player);
+    tick_loop(screen_ptr, screen_dimensions, fov, player, map_ptr);
+
+
+    char a = getch();
     endwin();
     deinit_display(screen_ptr, screen_dimensions);
+    deinit_map(map_ptr, rows, cols);
+    printf("rows: %d\n, cols: %d\n", screen_dimensions.x, screen_dimensions.y);
     return 0;
 }
 
