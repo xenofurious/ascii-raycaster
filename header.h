@@ -19,10 +19,14 @@ typedef struct {
     int y;
 } int_coord;
 
+enum player_movement_state{is_walking_forward, is_not_walking, is_walking_backwards};
+enum player_rotation_state{is_turning_left, is_stationary, is_turning_right};
+
 struct player_stats {
     float_coord player_coords;
     float direction_facing;
-    bool is_walking;
+    enum player_movement_state player_movement_state;
+    enum player_rotation_state player_rotation_state;
 };
 
 struct grid_collision_return {float_coord collision_pos; dir collision_dir; float total_dist;};

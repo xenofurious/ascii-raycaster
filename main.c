@@ -57,8 +57,6 @@ void tick_loop(char **screen_ptr, int_coord screen_dimensions, float fov, struct
         if (delta_time>compute_time) {
             usleep(delta_time - compute_time);
         }
-
-//        bob = 2;
     }
 }
 
@@ -84,6 +82,7 @@ int_coord get_screen_dimensions() {
 
 int main() {
     initscr();
+    nodelay(stdscr, TRUE);
     struct file_parse_return map = init_map("test_map_1");
     map_object **map_ptr = map.map_ptr;
     int cols = map.cols;
@@ -96,7 +95,9 @@ int main() {
     char **screen_ptr = init_display(screen_dimensions);
 
     player.player_coords = (float_coord){1.5, 1.5};
-    player.direction_facing = 135; 
+    player.direction_facing = 135;
+    player.player_movement_state = is_not_walking;
+    player.player_rotation_state = is_stationary;
     fov = 90;
         
     tick_loop(screen_ptr, screen_dimensions, fov, &player, map_ptr);
