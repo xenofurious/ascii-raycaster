@@ -6,6 +6,8 @@
 #include "header.h"
 #include "linalg.h"
 
+#define ASCII_PALETTE_SIZE 256
+
 quadrant_dir return_direction(float_coord direction) {
     if (direction.x>=0){
         if (direction.y>=0) {
@@ -22,21 +24,16 @@ quadrant_dir return_direction(float_coord direction) {
     }
 }
 
-// temporary data!!!
-struct player_stats player;
 
-
-float_coord test_start_pos = {1.5, 1.5};
-float_coord test_direction = {1.4, -3.6};
-
+char ascii_palette[ASCII_PALETTE_SIZE + 1] = "   ...',;:clodxkO0KXNWM"; // this is 23 characters
 
 
 // this function will NOT be void later on.
 // god this is so complicated.
-void render_to_buffer (struct player_stats player, float fov, int_coord screen_dimensions, map_object **map_ptr,  char **screen_ptr) {
+void render_to_buffer (struct player_stats *player, float fov, int_coord screen_dimensions, map_object **map_ptr,  char **screen_ptr) {
 
-    float left_buffer = player.direction_facing-(fov/2);
-    float right_buffer = player.direction_facing+(fov/2);
+    float left_buffer = player->direction_facing-(fov/2);
+    float right_buffer = player->direction_facing+(fov/2);
     float div = fov/screen_dimensions.x;
     float direction_rad, direction_rad_diff;
     float_coord direction;
@@ -51,11 +48,11 @@ void render_to_buffer (struct player_stats player, float fov, int_coord screen_d
 
     for(direction_rad = left_buffer; direction_rad<right_buffer; direction_rad+=div, pixel_column_no++){
         direction = convert_angle_to_normalised_vector(convert_degrees_to_radians(direction_rad));
-        raycast_info = perform_raycast(map_ptr, player.player_coords, direction, screen_dimensions.x, screen_dimensions.y);
+        raycast_info = perform_raycast(map_ptr, player->player_coords, direction, screen_dimensions.x, screen_dimensions.y);
         raycast_dist = raycast_info.total_dist;
 
         // "fisheye lens" correction
-        direction_rad_diff = player.direction_facing-direction_rad;
+        direction_rad_diff = player->direction_facing-direction_rad;
         screen_dist = raycast_dist * cos(convert_degrees_to_radians(direction_rad_diff));
 
         line_height = (screen_dimensions.y / screen_dist /2);
@@ -66,7 +63,7 @@ void render_to_buffer (struct player_stats player, float fov, int_coord screen_d
         line_padding = (screen_dimensions.y - line_height)/2;
         line_height_str = screen_dimensions.y-2*line_padding;
         memset(column_buffer, ' ', line_padding);
-        memset(column_buffer+line_padding, 'm', line_height_str);
+        memset(column_buffer+line_padding, 'M', line_height_str);
         memset(column_buffer+line_padding + line_height_str, ' ', line_padding);
         column_buffer[screen_dimensions.y] = '\0';
 

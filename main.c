@@ -10,6 +10,8 @@ const int fps = 60;
 const float delta_time = 1000000/(float)fps;
 const float char_width_to_height = 1.85023686; // optimised specifically for my terminal font. i don't really care what you think tbh.
 float fov;
+struct player_stats player;
+
 
 char **init_display(int_coord screen_dimensions) {
     char** arr;
@@ -32,7 +34,7 @@ void deinit_display(char **arr, int_coord screen_dimensions) {
     free(arr); 
 }
 
-void tick_loop(char **screen_ptr, int_coord screen_dimensions, float fov, struct player_stats player, map_object **map_ptr) {
+void tick_loop(char **screen_ptr, int_coord screen_dimensions, float fov, struct player_stats *player, map_object **map_ptr) {
     int counter = 0;
     clock_t start, end;
     float compute_time;
@@ -44,7 +46,7 @@ void tick_loop(char **screen_ptr, int_coord screen_dimensions, float fov, struct
         counter++;
         
         // init map
-        gameloop(&player);
+        gameloop(player);
         render_to_buffer(player, fov, screen_dimensions, map_ptr, screen_ptr);
         refresh();
 
@@ -97,10 +99,8 @@ int main() {
     player.direction_facing = 135; 
     fov = 90;
         
-    tick_loop(screen_ptr, screen_dimensions, fov, player, map_ptr);
+    tick_loop(screen_ptr, screen_dimensions, fov, &player, map_ptr);
 
-
-    char a = getch();
     endwin();
     deinit_display(screen_ptr, screen_dimensions);
     deinit_map(map_ptr, rows, cols);
