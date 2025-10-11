@@ -36,16 +36,16 @@ void tick_loop(char **screen_ptr, int_coord screen_dimensions, float fov, struct
     int counter = 0;
     clock_t start, end;
     float compute_time;
+    int bob = 1;
 
-
-    //while (bob == 1) {
+    while (bob == 1) {
         start = clock();
 
         counter++;
         
         // init map
-        gameloop(player, fov, map_ptr, screen_ptr);
-//        print_display_buffer(screen_ptr, screen_dimensions);
+        gameloop(&player);
+        render_to_buffer(player, fov, screen_dimensions, map_ptr, screen_ptr);
         refresh();
 
         end = clock();
@@ -56,8 +56,8 @@ void tick_loop(char **screen_ptr, int_coord screen_dimensions, float fov, struct
             usleep(delta_time - compute_time);
         }
 
- //       bob = 2;
-//    }
+//        bob = 2;
+    }
 }
 
 int_coord get_screen_dimensions() {

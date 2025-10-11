@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "header.h"
 #include "linalg.h"
@@ -32,23 +33,20 @@ float_coord test_direction = {1.4, -3.6};
 
 // this function will NOT be void later on.
 // god this is so complicated.
-void render_to_buffer (struct player_stats player, float fov, map_object **map_ptr, char **screen_ptr) {
-
-    int_coord screen_dimensions = (int_coord){205, 62}; // temporary code delete later
+void render_to_buffer (struct player_stats player, float fov, int_coord screen_dimensions, map_object **map_ptr,  char **screen_ptr) {
 
     float left_buffer = player.direction_facing-(fov/2);
     float right_buffer = player.direction_facing+(fov/2);
     float div = fov/screen_dimensions.x;
-    float direction_rad;
+    float direction_rad, direction_rad_diff;
     float_coord direction;
     
     struct grid_collision_return raycast_info;
-    float raycast_dist;
+    float raycast_dist, screen_dist;
 
     float line_height;
     int line_padding, line_height_str;
     int pixel_column_no = 0;
-    printf("calling\n");
     char column_buffer[screen_dimensions.y];    
 
     for(direction_rad = left_buffer; direction_rad<right_buffer; direction_rad+=div, pixel_column_no++){
@@ -56,9 +54,11 @@ void render_to_buffer (struct player_stats player, float fov, map_object **map_p
         raycast_info = perform_raycast(map_ptr, player.player_coords, direction, screen_dimensions.x, screen_dimensions.y);
         raycast_dist = raycast_info.total_dist;
 
-        // need to write a function to convert the raycasted distance to perpendicular camera distance. will do in a bit.
+        // "fisheye lens" correction
+        direction_rad_diff = player.direction_facing-direction_rad;
+        screen_dist = raycast_dist * cos(convert_degrees_to_radians(direction_rad_diff));
 
-        line_height = (screen_dimensions.y / raycast_dist /2);
+        line_height = (screen_dimensions.y / screen_dist /2);
         if (line_height<0) line_height = 0;
         else if (line_height>screen_dimensions.y) line_height = screen_dimensions.y;
         //printf("line height = %f\n", line_height);

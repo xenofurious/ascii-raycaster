@@ -34,9 +34,9 @@ extern struct player_stats player;
 extern int_coord screen_dimensions;
 
 // functions
-void gameloop(struct player_stats player, float fov, map_object **map_ptr, char **screen_ptr);
+void gameloop(struct player_stats *player);
 int_coord get_screen_dimensions();
 char **init_display(int_coord screen_dimensions);
 void deinit_display(char **arr, int_coord screen_dimensions);
 void print_display_buffer(char **screen_ptr, int_coord screen_dimensions);
-void render_to_buffer (struct player_stats player, float fov, map_object **map_ptr, char **screen_ptr);
+void render_to_buffer (struct player_stats player, float fov, int_coord screen_dimensions, map_object **map_ptr, char **screen_ptr);
