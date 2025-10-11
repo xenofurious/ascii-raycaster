@@ -126,23 +126,3 @@ struct grid_collision_return perform_raycast(map_object **map_ptr, float_coord s
     }
     return (struct grid_collision_return) {pos, collision_dir, total_dist};
 }
-
-
-
-/*
-
-int main() {
-    float_coord test_start_pos = {1.5, 1.5};
-    float_coord test_direction = {1.4, -3.6};
-
-    struct file_parse_return map_data = init_map("test_map_1");
-    map_object **map_ptr = map_data.map_ptr;
-    int rows = map_data.rows;
-    int cols = map_data.cols;
-
-    struct grid_collision_return raycast_data = perform_raycast(map_ptr, test_start_pos, test_direction, rows, cols);
-    printf("x: %f, y: %f, total dist = %f\n", raycast_data.collision_pos.x, raycast_data.collision_pos.y, raycast_data.total_dist);
-
-    return 0;
-}
-*/

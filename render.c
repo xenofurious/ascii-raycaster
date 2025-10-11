@@ -84,26 +84,6 @@ void print_display_buffer(char **screen_ptr, int_coord screen_dimensions) {
     for (int i = 0; i<screen_dimensions.x; i++) {
         for (int j = 0; j<screen_dimensions.y; j++){
             mvaddch(j, i, screen_ptr[i][j]);
-
         }
-
-        //printf("%s\n", screen_ptr[i]);
     }
-    //mvprintw(4, 4, "I LOVE MEN");
 }
-
-
-/*
-int main() {
-    struct file_parse_return mapdata = init_map("test_map_1");
-    map_object **map_ptr = mapdata.map_ptr;
-    int cols = mapdata.cols;
-    int rows = mapdata.rows;
-    float fov = 90;
-    player.player_coords = (float_coord){1.5, 1.5};
-    player.direction_facing = 180; // THIS IS IN DEGREES!! 
-
-    
-    render_to_buffer(player, fov, map_ptr);
-    return 0;
-}*/

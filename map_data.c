@@ -43,16 +43,3 @@ void deinit_map(map_object** arr, int rows, int cols) {
     }
     free(arr); 
 }
-
-/*
-int main() {
-    struct file_parse_return file_parse = init_map("test_map_1");
-    map_object **map_ptr = file_parse.map_ptr;
-    int rows = file_parse.rows;
-    int cols = file_parse.cols;
-    printf("%d\n", map_ptr[3][3]);
-
-    deinit_map(map_ptr, rows, cols);
-    printf("michaelgirafortniteskin\n");
-    return 0;
-}*/
