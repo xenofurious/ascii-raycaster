@@ -8,6 +8,9 @@
 
 #define ASCII_PALETTE_SIZE 256
 
+const int max_brightness = 256;
+const float max_visible_distance = 5;
+
 quadrant_dir return_direction(float_coord direction) {
     if (direction.x>=0){
         if (direction.y>=0) {
@@ -26,6 +29,7 @@ quadrant_dir return_direction(float_coord direction) {
 
 
 char ascii_palette[ASCII_PALETTE_SIZE + 1] = "   ...',;:clodxkO0KXNWM"; // this is 23 characters
+int ascii_palette_size = 23;
 
 
 // this function will NOT be void later on.
@@ -62,8 +66,13 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
 
         line_padding = (screen_dimensions.y - line_height)/2;
         line_height_str = screen_dimensions.y-2*line_padding;
+
+        float frac_dist = screen_dist/max_visible_distance;
+        if (frac_dist>1) frac_dist=1; if (frac_dist<0) frac_dist=0;
+        int char_select = ascii_palette_size-frac_dist*ascii_palette_size;
+
         memset(column_buffer, ' ', line_padding);
-        memset(column_buffer+line_padding, 'M', line_height_str);
+        memset(column_buffer+line_padding, ascii_palette[char_select],line_height_str);
         memset(column_buffer+line_padding + line_height_str, ' ', line_padding);
         column_buffer[screen_dimensions.y] = '\0';
 
