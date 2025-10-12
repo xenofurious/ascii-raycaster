@@ -9,7 +9,7 @@
 #define ASCII_PALETTE_SIZE 256
 
 const int max_brightness = 256;
-const float max_visible_distance = 5;
+const float max_visible_distance = 3;
 
 quadrant_dir return_direction(float_coord direction) {
     if (direction.x>=0){
@@ -82,6 +82,7 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
         
     }
     print_display_buffer(screen_ptr, screen_dimensions);
+    //mvprintw(65, 0, "%f", player->direction_facing);
 }
 
 

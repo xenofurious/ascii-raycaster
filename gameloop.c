@@ -31,11 +31,11 @@ void gameloop (struct player_stats *player) {
 
     // states
     if (player->player_movement_state == is_walking_forward) {
-        float_coord direction_gain = convert_angle_to_normalised_vector(player->direction_facing);
+        float_coord direction_gain = convert_angle_to_normalised_vector(convert_degrees_to_radians(player->direction_facing));
         player->player_coords.x += direction_gain.x/100;
         player->player_coords.y += direction_gain.y/100;
     } else if (player->player_movement_state == is_walking_backwards) {
-        float_coord direction_gain = convert_angle_to_normalised_vector(player->direction_facing);
+        float_coord direction_gain = convert_angle_to_normalised_vector(convert_degrees_to_radians(player->direction_facing));
         player->player_coords.x -= direction_gain.x/100;
         player->player_coords.y -= direction_gain.y/100;
     }
@@ -46,4 +46,6 @@ void gameloop (struct player_stats *player) {
     } else if (player->player_rotation_state == is_turning_right) {
         player->direction_facing+=1; 
     }
+
+
 }
