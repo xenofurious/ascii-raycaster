@@ -7,6 +7,11 @@
 #include "linalg.h"
 
 #define ASCII_PALETTE_SIZE 256
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN    "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
 const int max_brightness = 256;
 const float max_visible_distance = 6;
@@ -44,6 +49,7 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
     
     struct grid_collision_return raycast_info;
     float raycast_dist, screen_dist;
+    map_object collision_type;
 
     float line_height;
     int line_padding, line_height_str;
@@ -54,6 +60,7 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
         direction = convert_angle_to_normalised_vector(convert_degrees_to_radians(direction_rad));
         raycast_info = perform_raycast(map_ptr, player->player_coords, direction, screen_dimensions.x, screen_dimensions.y);
         raycast_dist = raycast_info.total_dist;
+        collision_type=raycast_info.collision_type;
 
         // "fisheye lens" correction
         direction_rad_diff = player->direction_facing-direction_rad;

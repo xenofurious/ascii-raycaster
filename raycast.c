@@ -79,10 +79,10 @@ struct grid_collision_return get_next_grid_collision(float_coord pos, float_coor
         }
     }
     total_dist += dir_comp ? dir1 : dir2;
-    return (struct grid_collision_return) {collision_pos, collision_dir, total_dist};
+    return (struct grid_collision_return) {collision_pos, collision_dir, null, total_dist};
 }
 
-bool check_collision(dir check_dir, float_coord pos, map_object **map_ptr) { // the fact that it explicitly points towards size 5 is bad and i need to fix this asap
+map_object check_collision(dir check_dir, float_coord pos, map_object **map_ptr) { // the fact that it explicitly points towards size 5 is bad and i need to fix this asap
     switch (check_dir){
         case up: pos.y-=EPSILON; break;
         case right: pos.x+=EPSILON; break;
@@ -92,9 +92,9 @@ bool check_collision(dir check_dir, float_coord pos, map_object **map_ptr) { // 
     }
     int_coord check_pos = {(int)pos.x, (int)pos.y};
     if (map_ptr[check_pos.x][check_pos.y] == wall) {
-        return true;
+        return wall;
     } else {
-        return false;
+        return empty; 
     }
 }
 
@@ -103,10 +103,10 @@ struct grid_collision_return perform_raycast(map_object **map_ptr, float_coord s
     float_coord pos = start_pos;
     dir collision_dir = none;
     float total_dist = 0;
-    bool collided = false;
+    map_object collided = empty;
 
     int i = 0;
-    while (pos.x >0 && pos.y > 0 && pos.x <rows+1 && pos.y<cols+1 && collided==false) { // i don't know if the +1 is useful but i'm not taking any chances
+    while (pos.x >0 && pos.y > 0 && pos.x <rows+1 && pos.y<cols+1 && collided==empty) { // i don't know if the +1 is useful but i'm not taking any chances
         // printf("\n%dth iteration!!!\n", i);
         next_collision_data = get_next_grid_collision(pos, direction, collision_dir, total_dist);
         pos = next_collision_data.collision_pos; 
@@ -121,8 +121,8 @@ struct grid_collision_return perform_raycast(map_object **map_ptr, float_coord s
         
         i++;
     }
-    if (!collided){
+    if (collided == empty){
         total_dist = -1;
     }
-    return (struct grid_collision_return) {pos, collision_dir, total_dist};
+    return (struct grid_collision_return) {pos, collision_dir, collided, total_dist};
 }
