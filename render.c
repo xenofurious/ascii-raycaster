@@ -9,7 +9,7 @@
 #define ASCII_PALETTE_SIZE 256
 
 const int max_brightness = 256;
-const float max_visible_distance = 3;
+const float max_visible_distance = 6;
 
 quadrant_dir return_direction(float_coord direction) {
     if (direction.x>=0){
@@ -27,9 +27,9 @@ quadrant_dir return_direction(float_coord direction) {
     }
 }
 
-
-char ascii_palette[ASCII_PALETTE_SIZE + 1] = "   ...',;:clodxkO0KXNWM"; // this is 23 characters
-int ascii_palette_size = 23;
+char ascii_palette[ASCII_PALETTE_SIZE+1] = ".'`^,:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@";
+//char ascii_palette[ASCII_PALETTE_SIZE + 1] = "   ...',;:clodxkO0KXNWM"; // this is 23 characters
+int ascii_palette_size = 68;
 
 
 // this function will NOT be void later on.

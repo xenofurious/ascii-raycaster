@@ -83,7 +83,7 @@ int_coord get_screen_dimensions() {
 int main() {
     initscr();
     nodelay(stdscr, TRUE);
-    struct file_parse_return map = init_map("test_map_1");
+    struct file_parse_return map = init_map("test_map_2");
     map_object **map_ptr = map.map_ptr;
     int cols = map.cols;
     int rows = map.rows;
