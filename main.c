@@ -98,7 +98,7 @@ int main() {
     player.direction_facing = 135;
     player.player_movement_state = is_not_walking;
     player.player_rotation_state = is_stationary;
-    fov = 90;
+    fov = 70;
         
     tick_loop(screen_ptr, screen_dimensions, fov, &player, map_ptr);
 
