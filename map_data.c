@@ -22,7 +22,6 @@ struct file_parse_return init_map(char *filename) {
     // first pass reads the header file. this is of the form "int row, int col"
     int rows, cols;
     fscanf(fp, "%d%d", &rows, &cols);
-    printf("\nno of rows: %d, no of cols = %d\n\n", rows, cols);
     
     map_object **map_ptr = malloc_map(rows, cols);
 

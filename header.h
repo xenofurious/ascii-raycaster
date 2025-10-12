@@ -6,7 +6,7 @@
 typedef enum {is_not, rot_left, rot_right} is_rotating;
 typedef enum {top_right, bottom_right, bottom_left, top_left} quadrant_dir;
 typedef enum {none, up, right, down, left} dir;
-typedef enum {wall, empty, null, red_wall} map_object;
+typedef enum {wall, empty, red_wall, blue_wall, green_wall, yellow_wall, null} map_object;
 
 // structs
 typedef struct {
@@ -27,6 +27,7 @@ struct player_stats {
     float direction_facing;
     enum player_movement_state player_movement_state;
     enum player_rotation_state player_rotation_state;
+    float walking_speed;
 };
 
 struct grid_collision_return {float_coord collision_pos; dir collision_dir; map_object collision_type; float total_dist;};
@@ -38,9 +39,9 @@ extern struct player_stats player;
 extern int_coord screen_dimensions;
 
 // functions
-void gameloop(struct player_stats *player);
+int gameloop(struct player_stats *player);
 int_coord get_screen_dimensions();
 char **init_display(int_coord screen_dimensions);
 void deinit_display(char **arr, int_coord screen_dimensions);
-void print_display_buffer(char **screen_ptr, int_coord screen_dimensions);
-void render_to_buffer (struct player_stats *player, float fov, int_coord screen_dimensions, map_object **map_ptr, char **screen_ptr);
+void print_display_buffer(char **screen_ptr, map_object *colour_ptr, int_coord screen_dimensions);
+void render_to_buffer (struct player_stats *player, float fov, int_coord screen_dimensions, map_object **map_ptr, char **screen_ptr, map_object *colour_ptr);

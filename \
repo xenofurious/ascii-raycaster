@@ -7,12 +7,11 @@
 #include "linalg.h"
 
 #define ASCII_PALETTE_SIZE 256
-
-// colours
-#define RED 1
-#define BLUE 2
-#define GREEN 3
-#define YELLOW 4
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN    "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
 const int max_brightness = 256;
 const float max_visible_distance = 6;
@@ -61,7 +60,7 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
         direction = convert_angle_to_normalised_vector(convert_degrees_to_radians(direction_rad));
         raycast_info = perform_raycast(map_ptr, player->player_coords, direction, screen_dimensions.x, screen_dimensions.y);
         raycast_dist = raycast_info.total_dist;
-        collision_type = raycast_info.collision_type;
+        collision_type=raycast_info.collision_type;
 
         // "fisheye lens" correction
         direction_rad_diff = player->direction_facing-direction_rad;
@@ -90,7 +89,7 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
 //        printf(", %d\n", pixel_column_no);
         
     }
-    print_display_buffer(screen_ptr, colour_ptr, screen_dimensions);
+    print_display_buffer(screen_ptr, screen_dimensions);
     //mvprintw(65, 0, "%f", player->direction_facing);
 }
 
@@ -99,17 +98,10 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
 // it's weird, but it's because the array is stored like that.
 // it makes everything easier
 
-void print_display_buffer(char **screen_ptr, map_object *colour_ptr, int_coord screen_dimensions) {
+void print_display_buffer(char **screen_ptr, int_coord screen_dimensions) {
     for (int i = 0; i<screen_dimensions.x; i++) {
         for (int j = 0; j<screen_dimensions.y; j++){
-            switch (colour_ptr[i]) {
-                case wall: mvaddch(j, i, screen_ptr[i][j]); break;
-                case red_wall: attron(COLOR_PAIR(RED)); mvaddch(j, i, screen_ptr[i][j]); attroff(COLOR_PAIR(RED)); break;
-                case blue_wall: attron(COLOR_PAIR(BLUE)); mvaddch(j, i, screen_ptr[i][j]); attroff(COLOR_PAIR(BLUE)); break;
-                case green_wall: attron(COLOR_PAIR(GREEN)); mvaddch(j, i, screen_ptr[i][j]); attroff(COLOR_PAIR(GREEN)); break;
-                case yellow_wall: attron(COLOR_PAIR(YELLOW)); mvaddch(j, i, screen_ptr[i][j]); attroff(COLOR_PAIR(YELLOW)); break;
-                default: attron(COLOR_PAIR(BLUE)); mvaddch(j, i, screen_ptr[i][j]); attroff(COLOR_PAIR(BLUE)); break;
-            }
+            mvaddch(j, i, screen_ptr[i][j]);
         }
     }
 }

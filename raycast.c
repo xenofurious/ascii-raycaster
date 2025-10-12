@@ -91,11 +91,8 @@ map_object check_collision(dir check_dir, float_coord pos, map_object **map_ptr)
         case none: break;
     }
     int_coord check_pos = {(int)pos.x, (int)pos.y};
-    if (map_ptr[check_pos.x][check_pos.y] == wall) {
-        return wall;
-    } else {
-        return empty; 
-    }
+
+    return map_ptr[check_pos.x][check_pos.y];
 }
 
 struct grid_collision_return perform_raycast(map_object **map_ptr, float_coord start_pos, float_coord direction, int rows, int cols) {
