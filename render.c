@@ -55,9 +55,9 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
     float line_height;
     int line_padding, line_height_str;
     int pixel_column_no = 0;
-    char column_buffer[screen_dimensions.y];    
+    char column_buffer[screen_dimensions.y];
 
-    for(direction_rad = left_buffer; pixel_column_no<screen_dimensions.x; direction_rad+=div, pixel_column_no++){
+    for(direction_rad = left_buffer; pixel_column_no<screen_dimensions.x-1; direction_rad+=div, pixel_column_no++){
         direction = convert_angle_to_normalised_vector(convert_degrees_to_radians(direction_rad));
         raycast_info = perform_raycast(map_ptr, player->player_coords, direction, screen_dimensions.x, screen_dimensions.y);
         raycast_dist = raycast_info.total_dist;

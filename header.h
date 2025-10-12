@@ -39,7 +39,7 @@ extern struct player_stats player;
 extern int_coord screen_dimensions;
 
 // functions
-int gameloop(struct player_stats *player);
+int gameloop(struct player_stats *player, map_object **map_ptr);
 int_coord get_screen_dimensions();
 char **init_display(int_coord screen_dimensions);
 void deinit_display(char **arr, int_coord screen_dimensions);

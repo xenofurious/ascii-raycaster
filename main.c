@@ -63,7 +63,7 @@ void tick_loop(char **screen_ptr, map_object *colour_ptr, int_coord screen_dimen
         counter++;
         
         // init map
-        running = gameloop(player);
+        running = gameloop(player, map_ptr);
         render_to_buffer(player, fov, screen_dimensions, map_ptr, screen_ptr, colour_ptr);
         refresh();
 
