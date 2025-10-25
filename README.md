@@ -1,6 +1,6 @@
 ## the world's worst rendering engine
 
-![screenshot of game](https://github.com/xenofurious/ascii-raycaster/blob/main/examples/mazegame.png)
+![screenshot of game](https://github.com/xenofurious/ascii-raycaster/tree/master/examples/mazegame.png)
 
 A Hovertank-3D style renderer running entirely inside the terminal
 
