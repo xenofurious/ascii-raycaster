@@ -4,7 +4,6 @@
 
 
 typedef enum {is_not, rot_left, rot_right} is_rotating;
-typedef enum {top_right, bottom_right, bottom_left, top_left} quadrant_dir;
 typedef enum {none, up, right, down, left} dir;
 typedef enum {wall, empty, red_wall, blue_wall, green_wall, yellow_wall, null} map_object;
 

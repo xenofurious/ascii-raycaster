@@ -17,29 +17,11 @@
 const int max_brightness = 256;
 const float max_visible_distance = 6;
 
-quadrant_dir return_direction(float_coord direction) {
-    if (direction.x>=0){
-        if (direction.y>=0) {
-            return bottom_right;
-        } else {
-            return top_right;
-        }
-    } else {
-        if (direction.y>=0) {
-            return bottom_left; 
-        } else {
-            return top_left;
-        }
-    }
-}
-
 char ascii_palette[ASCII_PALETTE_SIZE+1] = ".'`^,:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@";
 //char ascii_palette[ASCII_PALETTE_SIZE + 1] = "   ...',;:clodxkO0KXNWM"; // this is 23 characters
 int ascii_palette_size = 68;
 
 
-// this function will NOT be void later on.
-// god this is so complicated.
 void render_to_buffer (struct player_stats *player, float fov, int_coord screen_dimensions, map_object **map_ptr,  char **screen_ptr, map_object *colour_ptr) {
 
     float left_buffer = player->direction_facing-(fov/2);
@@ -94,10 +76,6 @@ void render_to_buffer (struct player_stats *player, float fov, int_coord screen_
     //mvprintw(65, 0, "%f", player->direction_facing);
 }
 
-
-// x is the columns, y is the rows.
-// it's weird, but it's because the array is stored like that.
-// it makes everything easier
 
 void print_display_buffer(char **screen_ptr, map_object *colour_ptr, int_coord screen_dimensions) {
     for (int i = 0; i<screen_dimensions.x; i++) {
