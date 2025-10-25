@@ -1,6 +1,6 @@
 ## the world's worst rendering engine
 
-![screenshot of game](https://github.com/xenofurious/ascii-raycaster/tree/master/examples/mazegame.png)
+![screenshot of game](examples/mazegame.png)
 
 <img src="https://github.com/xenofurious/ascii-raycaster/tree/master/examples/mazegame.png" alt="screenshot of game")
 
