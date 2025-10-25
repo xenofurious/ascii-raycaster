@@ -2,8 +2,6 @@
 
 ![screenshot of game](examples/mazegame.png)
 
-<img src="https://github.com/xenofurious/ascii-raycaster/tree/master/examples/mazegame.png" alt="screenshot of game")
-
 A Hovertank-3D style renderer running entirely inside the terminal
 
 ## How to install
